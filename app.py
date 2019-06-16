@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import main
 
 app = Flask(__name__)
 
@@ -11,9 +12,14 @@ def index():
 @app.route('/confirm', methods = ['POST', 'GET'])
 def confirm():
     if request.method == 'POST':
-        result = request.form["Name"]
-    print(result)
-    return render_template("confirm.html",result = result)
+        text = request.form["Name"]
+        print(text)
+
+        mecab = main.mecab()
+        result = mecab.execute(text)
+        print(result)
+    
+    return render_template("confirm.html", text = text, result = result)
 
 if __name__ == '__main__':
     app.run()
